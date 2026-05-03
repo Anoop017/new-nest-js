@@ -1,19 +1,25 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService, } from './app.service';
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { AppService } from "./app.service";
 
-@Controller()
-export class AppController {
-  constructor(
-    private readonly appService: AppService,
-  ) {}
+@Controller('users')
+export class AppController{
+  constructor(private readonly appService: AppService){}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getAll(){
+    return this.appService.getAllUsers()
   }
 
-  @Get('/hello')
-  sayHello(): string{
-    return this.appService.sayHello();
+  @Post()
+  create(@Body('name') name: string){
+    return this.appService.createUser(name);
   }
+
+  @Put()
+  update(@Param('id') id:string @Body('name')name:string){
+    return this.appService.updateUser(Number(id),name)
+  }
+
+  @patvh
+
 }
