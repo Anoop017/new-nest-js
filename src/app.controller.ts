@@ -1,25 +1,40 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from "@nestjs/common";
 import { AppService } from "./app.service";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+
+
 
 @Controller('users')
 export class AppController{
   constructor(private readonly appService: AppService){}
 
   @Get()
-  getAll(){
-    return this.appService.getAllUsers()
+  getAll(@Query('name')name?:string){
+    return this.appService.getAllUsers(name)
   }
 
   @Post()
-  create(@Body('name') name: string){
-    return this.appService.createUser(name);
+  create(@Body() body:CreateUserDto){
+    return this.appService.createUser(body.name);
   }
 
-  @Put()
-  update(@Param('id') id:string @Body('name')name:string){
+  @Put(':id')
+  update(@Param('id') id:string, @Body('name')name:string){
     return this.appService.updateUser(Number(id),name)
   }
 
-  @patvh
+  @Patch(':id')
+  patch(
+    @Param('id')id:string,
+    @Body() body:UpdateUserDto
+  ){
+    return this.appService.patchUser(Number(id),body.name)
+  }
+
+  @Delete(':id')
+  delete(@Param('id')id:string){
+    return this.appService.deleteUser(Number(id))
+  }
 
 }

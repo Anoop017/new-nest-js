@@ -1,4 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { User } from './users/user.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+
 
 @Injectable()
 export class AppService {
@@ -6,10 +10,19 @@ export class AppService {
     { id: 1, name: 'Anoop' },
     { id: 2, name: 'John' },
   ];
+  
+  constructor(
+  @InjectRepository(User)
+  private userRepo: Repository<User>,
+  
+){}
 
   // GET
-  getAllUsers() {
-    return this.users;
+  getAllUsers(name?: string) {
+    if(!name){
+      return this.users 
+    }
+    return this.users.filter(user=>user.name?.toLowerCase().includes(name.toLowerCase()))
   }
 
   // POST
@@ -36,7 +49,9 @@ export class AppService {
     const user = this.users.find(u => u.id === id);
     if (!user) return 'User not found';
 
-    if (name) user.name = name;
+    if (name !== undefined){
+      user.name = name;
+  }
     return user;
   }
 
