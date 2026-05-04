@@ -2,39 +2,45 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from "@
 import { AppService } from "./app.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-
-
+import { newUser } from "./users/user.entity";
 
 @Controller('users')
-export class AppController{
-  constructor(private readonly appService: AppService){}
+export class AppController {
+  constructor(private readonly appService: AppService) { }
 
   @Get()
-  getAll(@Query('name')name?:string){
-    return this.appService.getAllUsers(name)
+  async getAll(@Query('name') name?: string): Promise<newUser[]> {
+    return this.appService.getAllUsers(name);
+  }
+
+  @Get(':id')
+  async getById(@Param('id') id: string): Promise<newUser> {
+    return this.appService.getUserById(Number(id));
   }
 
   @Post()
-  create(@Body() body:CreateUserDto){
+  async create(@Body() body: CreateUserDto): Promise<newUser> {
     return this.appService.createUser(body.name);
   }
 
   @Put(':id')
-  update(@Param('id') id:string, @Body('name')name:string){
-    return this.appService.updateUser(Number(id),name)
+  async update(
+    @Param('id') id: string,
+    @Body('name') name: string
+  ): Promise<newUser> {
+    return this.appService.updateUser(Number(id), name);
   }
 
   @Patch(':id')
-  patch(
-    @Param('id')id:string,
-    @Body() body:UpdateUserDto
-  ){
-    return this.appService.patchUser(Number(id),body.name)
+  async patch(
+    @Param('id') id: string,
+    @Body() body: UpdateUserDto
+  ): Promise<newUser> {
+    return this.appService.patchUser(Number(id), body.name);
   }
 
   @Delete(':id')
-  delete(@Param('id')id:string){
-    return this.appService.deleteUser(Number(id))
+  async delete(@Param('id') id: string): Promise<{ message: string }> {
+    return this.appService.deleteUser(Number(id));
   }
-
 }

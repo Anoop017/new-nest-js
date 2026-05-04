@@ -1,66 +1,63 @@
-import { Injectable } from '@nestjs/common';
-import { User } from './users/user.entity';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { newUser} from './users/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 
 @Injectable()
 export class AppService {
-  private users = [
-    { id: 1, name: 'Anoop' },
-    { id: 2, name: 'John' },
-  ];
-  
   constructor(
-  @InjectRepository(User)
-  private userRepo: Repository<User>,
-  
-){}
+    @InjectRepository(newUser)
+    private userRepo: Repository<newUser>,
+  ) { }
 
-  // GET
-  getAllUsers(name?: string) {
-    if(!name){
-      return this.users 
+  // GET ALL - with optional name filter
+  async getAllUsers(name?: string): Promise<newUser[]> {
+    if (!name) {
+      return this.userRepo.find();
     }
-    return this.users.filter(user=>user.name?.toLowerCase().includes(name.toLowerCase()))
+    return this.userRepo
+      .createQueryBuilder('user')
+      .where('user.name ILIKE :name', { name: `%${name}%` })
+      .getMany();
   }
 
-  // POST
-  createUser(name: string) {
-    const newUser = {
-      id: Date.now(),
-      name,
-    };
-    this.users.push(newUser);
-    return newUser;
-  }
-
-  // PUT (replace)
-  updateUser(id: number, name: string) {
-    const index = this.users.findIndex(u => u.id === id);
-    if (index === -1) return 'User not found';
-
-    this.users[index] = { id, name };
-    return this.users[index];
-  }
-
-  // PATCH (partial update)
-  patchUser(id: number, name?: string) {
-    const user = this.users.find(u => u.id === id);
-    if (!user) return 'User not found';
-
-    if (name !== undefined){
-      user.name = name;
-  }
+  // GET BY ID
+  async getUserById(id: number): Promise<newUser> {
+    const user = await this.userRepo.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
     return user;
   }
 
-  // DELETE
-  deleteUser(id: number) {
-    const index = this.users.findIndex(u => u.id === id);
-    if (index === -1) return 'User not found';
+  // POST - CREATE
+  async createUser(name: string): Promise<newUser> {
+    const newUser = this.userRepo.create({ name });
+    return this.userRepo.save(newUser);
+  }
 
-    const deleted = this.users.splice(index, 1);
-    return deleted;
+  // PUT - FULL UPDATE (replace)
+  async updateUser(id: number, name: string): Promise<newUser> {
+    const user = await this.getUserById(id);
+    user.name = name;
+    return this.userRepo.save(user);
+  }
+
+  // PATCH - PARTIAL UPDATE
+  async patchUser(id: number, name?: string): Promise<newUser> {
+    const user = await this.getUserById(id);
+
+    if (name !== undefined) {
+      user.name = name;
+    }
+    return this.userRepo.save(user);
+  }
+
+  // DELETE
+  async deleteUser(id: number): Promise<{ message: string }> {
+    const user = await this.getUserById(id);
+    await this.userRepo.remove(user);
+    return { message: `User with ID ${id} deleted successfully` };
   }
 }

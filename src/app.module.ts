@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService, } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/user.entity';
+import { newUser } from './users/user.entity';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { User } from './users/user.entity';
         synchronize: true, // ⚠️ only for dev
       }),
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([newUser]),
 
   ],
   controllers: [AppController],
