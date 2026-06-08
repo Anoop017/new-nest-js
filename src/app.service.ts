@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { newUser} from './users/user.entity';
-import { Repository } from 'typeorm';
+import { Admin, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { userRoles } from './users/user-role.enum';
 
 
 @Injectable()
@@ -59,5 +60,10 @@ export class AppService {
     const user = await this.getUserById(id);
     await this.userRepo.remove(user);
     return { message: `User with ID ${id} deleted successfully` };
+  }
+
+  async userRole(id:number,name?:string){
+    const role = userRoles.Admin
+
   }
 }
