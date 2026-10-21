@@ -84,21 +84,3 @@ Check out a few resources that may come in handy when working with NestJS:
 - Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
 Update: 30/9/2026, 3:10:13 pm | Random: 73154
-Update: 1/10/2026, 3:10:13 pm | Random: 31710
-Update: 3/10/2026, 3:10:15 pm | Random: 54085
-Update: 4/10/2026, 3:10:13 pm | Random: 97040
-Update: 5/10/2026, 3:10:12 pm | Random: 98908
-Update: 6/10/2026, 3:10:13 pm | Random: 2919
-Update: 7/10/2026, 3:10:13 pm | Random: 98095
-Update: 8/10/2026, 3:10:12 pm | Random: 30464
-Update: 9/10/2026, 3:10:13 pm | Random: 92994
-Update: 10/10/2026, 3:10:12 pm | Random: 35306
-Update: 11/10/2026, 3:10:15 pm | Random: 39172
-Update: 12/10/2026, 3:10:12 pm | Random: 4242
-Update: 13/10/2026, 3:10:12 pm | Random: 97889
-Update: 14/10/2026, 3:10:12 pm | Random: 73856
-Update: 15/10/2026, 3:10:13 pm | Random: 27028
-Update: 16/10/2026, 3:10:12 pm | Random: 15512
-Update: 18/10/2026, 3:10:13 pm | Random: 83064
-Update: 19/10/2026, 3:10:13 pm | Random: 42145
-Update: 20/10/2026, 3:10:12 pm | Random: 25265
